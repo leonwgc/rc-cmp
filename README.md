@@ -1,0 +1,2 @@
+# rc-cmp
+react component 
