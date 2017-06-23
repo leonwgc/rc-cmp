@@ -19,7 +19,8 @@ function getPath(_path) {
 var config = {
   context: path.resolve(__dirname),
   entry: {
-    index: './index'
+    index: './index',
+    vendor: ['react', 'react-dom']
   },
   output: {
     path: dist,
@@ -102,19 +103,14 @@ var config = {
         options: {
           cacheDirectory: true,
           presets: ['es2015', 'react'],
-          plugins: [['transform-object-rest-spread'], ['transform-runtime'], ['transform-class-properties'], ['syntax-dynamic-import']]
+          plugins: [['transform-decorators-legacy'], ['transform-object-rest-spread'], ['transform-runtime'], ['transform-class-properties'], ['syntax-dynamic-import']]
         }
       }
     ]
   },
   resolve: {
     extensions: ['.js', '.json', '.sass', '.scss', '.less', 'jsx'],
-    alias: isDev
-      ? {}
-      : {
-          react: 'preact-compat',
-          'react-dom': 'preact-compat'
-        }
+    alias: {}
   },
   plugins: [
     new CleanPlugin([dist]),
@@ -130,7 +126,10 @@ var config = {
         minifyJS: isProd
       }
     }),
-    extractSass
+    extractSass,
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
+    })
   ]
 };
 
@@ -146,9 +145,6 @@ if (isDev) {
 
   config.plugins.push(new webpack.HotModuleReplacementPlugin());
   console.log(`in development mode with port ${port}`);
-} else {
-  const serve = require('../proxy');
-  serve('prod', port);
 }
 
 if (isProd) {
