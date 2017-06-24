@@ -11,6 +11,8 @@ class AppStore {
   @observable pageCount = 20;
   @observable page = 1;
 
+  @observable isOpen = false;
+
   @computed
   get formIsValid() {
     return this.name === 'wgc';

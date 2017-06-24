@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Pager from './src/Pager';
+import Dialog from './src/Dialog';
 import PlaceholderInput from './src/PlaceholderInput';
 import { observer, inject } from 'mobx-react';
 
@@ -7,6 +8,7 @@ import { observer, inject } from 'mobx-react';
 @observer
 export default class App extends Component {
   render() {
+    const store = this.props.store;
     return (
       <div>
         <Pager pageCount={this.props.store.pageCount} onPageChange={this.props.store.onPageChange} />
@@ -14,6 +16,24 @@ export default class App extends Component {
         <div>
           <PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} />
           <button disabled={!this.props.store.formIsValid}>submit</button>
+        </div>
+        <div>
+          <button
+            onClick={() => {
+              store.setData({ isOpen: true });
+            }}>
+            open dialog
+          </button>
+          <Dialog
+            isOpen={store.isOpen}
+            close={() => {
+              store.setData({ isOpen: false });
+            }}>
+            <div style={{ width: '400px', height: '200px' }}>
+              <div>hello world</div>
+              <p><PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} /></p>
+            </div>
+          </Dialog>
         </div>
       </div>
     );
