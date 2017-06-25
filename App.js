@@ -1,9 +1,35 @@
 import React, { Component } from 'react';
 import Pager from './src/Pager';
 import Dialog from './src/Dialog';
+import Upload from './src/tp/index';
 import PlaceholderInput from './src/PlaceholderInput';
 import { observer, inject } from 'mobx-react';
 import './App.scss';
+
+const uploaderProps = {
+  action: 'http://localhost:3001/api/upload',
+  data: { name: 'leon', age: 18 },
+  headers: {
+    myHeader: 'leonwgc'
+  },
+  multiple: true,
+  beforeUpload(file) {
+    console.log('beforeUpload', file.name);
+  },
+  onStart: file => {
+    console.log('onStart', file.name);
+    // this.refs.inner.abort(file);
+  },
+  onSuccess(file) {
+    console.log('onSuccess', file);
+  },
+  onProgress(step, file) {
+    console.log('onProgress', Math.round(step.percent), file.name);
+  },
+  onError(err) {
+    console.log('onError', err);
+  }
+};
 
 @inject('store')
 @observer
@@ -38,6 +64,12 @@ export default class App extends Component {
               <p><PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} /></p>
             </div>
           </Dialog>
+        </div>
+        <div>
+          <h1>upload </h1>
+          <Upload {...uploaderProps} component="div" style={{ display: 'inline-block' }}>
+            <a>开始上传2</a>
+          </Upload>
         </div>
       </div>
     );

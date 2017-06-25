@@ -103,7 +103,13 @@ var config = {
         options: {
           cacheDirectory: true,
           presets: ['es2015', 'react'],
-          plugins: [['transform-decorators-legacy'], ['transform-object-rest-spread'], ['transform-runtime'], ['transform-class-properties'], ['syntax-dynamic-import']]
+          plugins: [
+            ['transform-decorators-legacy'],
+            ['transform-object-rest-spread'],
+            ['transform-runtime'],
+            ['transform-class-properties'],
+            ['syntax-dynamic-import']
+          ]
         }
       }
     ]
