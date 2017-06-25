@@ -7,6 +7,8 @@ import UploadBox from './src/UploadBox';
 import { observer, inject } from 'mobx-react';
 import './App.scss';
 
+import Avatar from './ref/Avatar';
+
 const uploaderProps = {
   action: 'http://localhost:3001/api/upload',
   data: { name: 'leon', age: 18 },
@@ -73,6 +75,12 @@ export default class App extends Component {
           </Upload>
 
         </div>
+        <div>
+          <h1>upload antd </h1>
+          <Avatar />
+
+        </div>
+
       </div>
     );
   }

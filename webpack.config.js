@@ -10,7 +10,9 @@ const env = process.env.NODE_ENV;
 const isProd = env === 'production';
 const isDev = !isProd;
 const port = 3000;
+
 const extractSass = new ExtractTextPlugin('[name].css');
+var extractLess = new ExtractTextPlugin('[name][contenthash].css');
 
 function getPath(_path) {
   return path.resolve(__dirname, _path);
@@ -19,8 +21,7 @@ function getPath(_path) {
 var config = {
   context: path.resolve(__dirname),
   entry: {
-    index: './index',
-    vendor: ['react', 'react-dom']
+    index: ['./polyfill', './index']
   },
   output: {
     path: dist,
@@ -31,23 +32,23 @@ var config = {
     rules: [
       // {   enforce: "pre",   test: /\.js$/,   exclude: /node_modules/,   loader:
       // "eslint-loader", },
-      // {
-      //   test: /\.less$/,
-      //   use: extractLESS.extract([
-      //     {
-      //       loader: 'css-loader',
-      //       options: {
-      //         sourceMap: isDev
-      //       }
-      //     },
-      //     {
-      //       loader: 'less-loader',
-      //       options: {
-      //         sourceMap: isDev
-      //       }
-      //     }
-      //   ])
-      // },
+      {
+        test: /\.less$/,
+        use: extractLess.extract([
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: isDev
+            }
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              sourceMap: isDev
+            }
+          }
+        ])
+      },
       {
         test: /\.scss$/,
         use: extractSass.extract([
@@ -108,7 +109,14 @@ var config = {
             ['transform-object-rest-spread'],
             ['transform-runtime'],
             ['transform-class-properties'],
-            ['syntax-dynamic-import']
+            ['syntax-dynamic-import'],
+            [
+              'import',
+              {
+                libraryName: 'antd',
+                style: true
+              }
+            ]
           ]
         }
       }
@@ -125,17 +133,18 @@ var config = {
       template: `./index.html`,
       inject: true,
       hash: true,
-      // chunks: ['index'],
+      chunks: ['polyfill', 'index'],
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
         minifyJS: isProd
       }
     }),
-    extractSass,
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor'
-    })
+    extractLess,
+    extractSass
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   name: 'vendor'
+    // })
   ]
 };
 
