@@ -3,6 +3,7 @@ import Pager from './src/Pager';
 import Dialog from './src/Dialog';
 import Upload from './src/tp/index';
 import PlaceholderInput from './src/PlaceholderInput';
+import UploadBox from './src/UploadBox';
 import { observer, inject } from 'mobx-react';
 import './App.scss';
 
@@ -68,8 +69,9 @@ export default class App extends Component {
         <div>
           <h1>upload </h1>
           <Upload {...uploaderProps} component="div" style={{ display: 'inline-block' }}>
-            <a>开始上传2</a>
+            <UploadBox />
           </Upload>
+
         </div>
       </div>
     );
