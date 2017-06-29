@@ -61,7 +61,8 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack -p",
-    "start": "cross-env NODE_ENV=development webpack-dev-server"
+    "start": "cross-env NODE_ENV=development webpack-dev-server",
+    "preact": "cross-env NODE_ENV=preact webpack-dev-server"
   },
   "repository": {
     "type": "git",

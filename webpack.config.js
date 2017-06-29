@@ -9,6 +9,7 @@ const dist = path.resolve(__dirname, 'dist');
 const env = process.env.NODE_ENV;
 const isProd = env === 'production';
 const isDev = !isProd;
+const isPreact = env === 'preact';
 const port = 3000;
 
 const extractSass = new ExtractTextPlugin('[name].css');
@@ -18,11 +19,33 @@ function getPath(_path) {
   return path.resolve(__dirname, _path);
 }
 
+const babelPlugins = [
+  ['transform-decorators-legacy'],
+  ['transform-object-rest-spread'],
+  ['transform-runtime'],
+  ['transform-class-properties'],
+  ['syntax-dynamic-import'],
+  [
+    'import',
+    {
+      libraryName: 'antd',
+      style: true
+    }
+  ]
+];
+
+const entry = {
+  index: ['./polyfill', './index']
+};
+
+if (isPreact) {
+  babelPlugins.push(['transform-react-jsx', { pragma: 'h' }]);
+  entry.index = ['./preact/index'];
+}
+
 var config = {
   context: path.resolve(__dirname),
-  entry: {
-    index: ['./polyfill', './index']
-  },
+  entry: entry,
   output: {
     path: dist,
     filename: '[name].js'
@@ -104,20 +127,7 @@ var config = {
         options: {
           cacheDirectory: true,
           presets: ['es2015', 'react'],
-          plugins: [
-            ['transform-decorators-legacy'],
-            ['transform-object-rest-spread'],
-            ['transform-runtime'],
-            ['transform-class-properties'],
-            ['syntax-dynamic-import'],
-            [
-              'import',
-              {
-                libraryName: 'antd',
-                style: true
-              }
-            ]
-          ]
+          plugins: babelPlugins
         }
       }
     ]
@@ -133,7 +143,7 @@ var config = {
       template: `./index.html`,
       inject: true,
       hash: true,
-      chunks: ['polyfill', 'index'],
+      chunks: ['index'],
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
@@ -142,9 +152,6 @@ var config = {
     }),
     extractLess,
     extractSass
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'vendor'
-    // })
   ]
 };
 
@@ -153,13 +160,12 @@ if (isDev) {
     disableHostCheck: true,
     contentBase: dist,
     port: port,
-    // hot: true,
+    hot: true,
     inline: true,
     proxy: {}
   };
 
   config.plugins.push(new webpack.HotModuleReplacementPlugin());
-  console.log(`in development mode with port ${port}`);
 }
 
 if (isProd) {
