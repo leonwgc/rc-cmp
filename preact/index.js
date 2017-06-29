@@ -1,4 +1,8 @@
-import { h, render, Component } from './preact';
+// import { h, render, Component } from './preact';
+
+var h = preact.h,
+  render = preact.render,
+  Component = preact.Component;
 
 class Clock extends Component {
   constructor() {
@@ -23,9 +27,10 @@ class Clock extends Component {
 
   render(props, state) {
     let time = new Date(state.time).toLocaleTimeString();
-    return <span>{time}</span>;
+    // return <span>{time}</span>;
+    return h('span', { className: props.className }, time);
   }
 }
 
 // render an instance of Clock into <body>:
-render(<Clock />, document.body);
+render(h(Clock, { className: 'leon' }), document.body);

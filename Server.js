@@ -4,7 +4,10 @@ var cors = require('cors');
 var formidable = require('formidable'),
   http = require('http'),
   util = require('util');
+var serveStatic = require('serve-static');
+var path = require('path');
 
+app.use(serveStatic(path.resolve(__dirname, './preact/')));
 app.use(cors());
 
 app.get('/api', function(req, res) {
