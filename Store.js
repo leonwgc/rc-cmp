@@ -1,6 +1,6 @@
 import { observable, action, useStrict, computed } from 'mobx';
 
-useStrict(true);
+// useStrict(true);
 
 export default class AppStore {
   @observable name = '';
@@ -8,6 +8,8 @@ export default class AppStore {
   @observable page = 1;
 
   @observable isOpen = false;
+
+  @observable image = '';
 
   @computed
   get formIsValid() {
@@ -31,5 +33,15 @@ export default class AppStore {
   @action
   onPageChange = page => {
     this.page = page;
+  };
+
+  @action
+  uploadSuccess = (res, file) => {
+    this.image = window.URL.createObjectURL(file);
+  };
+
+  @action
+  deleteImage = () => {
+    this.image = '';
   };
 }

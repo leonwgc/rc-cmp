@@ -17,26 +17,23 @@ class AjaxUploader extends Component {
     accept: PropTypes.string,
     children: PropTypes.any,
     onStart: PropTypes.func,
-    data: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.func,
-    ]),
+    data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     headers: PropTypes.object,
     beforeUpload: PropTypes.func,
     customRequest: PropTypes.func,
     onProgress: PropTypes.func,
-    withCredentials: PropTypes.bool,
-  }
+    withCredentials: PropTypes.bool
+  };
 
-  state = { uid: getUid() }
+  state = { uid: getUid() };
 
-  reqs = {}
+  reqs = {};
 
   onChange = e => {
     const files = e.target.files;
     this.uploadFiles(files);
     this.reset();
-  }
+  };
 
   onClick = () => {
     const el = this.refs.file;
@@ -44,13 +41,13 @@ class AjaxUploader extends Component {
       return;
     }
     el.click();
-  }
+  };
 
   onKeyDown = e => {
     if (e.key === 'Enter') {
       this.onClick();
     }
-  }
+  };
 
   onFileDrop = e => {
     if (e.type === 'dragover') {
@@ -62,7 +59,7 @@ class AjaxUploader extends Component {
     this.uploadFiles(files);
 
     e.preventDefault();
-  }
+  };
 
   componentDidMount() {
     this._isMounted = true;
@@ -92,16 +89,18 @@ class AjaxUploader extends Component {
 
     const before = props.beforeUpload(file, fileList);
     if (before && before.then) {
-      before.then((processedFile) => {
-        const processedFileType = Object.prototype.toString.call(processedFile);
-        if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
-          this.post(processedFile);
-        } else {
-          this.post(file);
-        }
-      }).catch(e => {
-        console && console.log(e); // eslint-disable-line
-      });
+      before
+        .then(processedFile => {
+          const processedFileType = Object.prototype.toString.call(processedFile);
+          if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
+            this.post(processedFile);
+          } else {
+            this.post(file);
+          }
+        })
+        .catch(e => {
+          console && console.log(e); // eslint-disable-line
+        });
     } else if (before !== false) {
       setTimeout(() => this.post(file), 0);
     }
@@ -126,9 +125,11 @@ class AjaxUploader extends Component {
       data,
       headers: props.headers,
       withCredentials: props.withCredentials,
-      onProgress: onProgress ? e => {
-        onProgress(e, file);
-      } : null,
+      onProgress: onProgress
+        ? e => {
+            onProgress(e, file);
+          }
+        : null,
       onSuccess: ret => {
         delete this.reqs[uid];
         props.onSuccess(ret, file);
@@ -136,14 +137,14 @@ class AjaxUploader extends Component {
       onError: (err, ret) => {
         delete this.reqs[uid];
         props.onError(err, ret, file);
-      },
+      }
     });
     onStart(file);
   }
 
   reset() {
     this.setState({
-      uid: getUid(),
+      uid: getUid()
     });
   }
 
@@ -159,7 +160,7 @@ class AjaxUploader extends Component {
         delete reqs[uid];
       }
     } else {
-      Object.keys(reqs).forEach((uid) => {
+      Object.keys(reqs).forEach(uid => {
         if (reqs[uid]) {
           reqs[uid].abort();
         }
@@ -170,41 +171,37 @@ class AjaxUploader extends Component {
   }
 
   render() {
-    const {
-      component: Tag, prefixCls, className, disabled,
-      style, multiple, accept, children,
-    } = this.props;
+    const { component: Tag, prefixCls, className, disabled, style, multiple, accept, children } = this.props;
     const cls = classNames({
       [prefixCls]: true,
       [`${prefixCls}-disabled`]: disabled,
-      [className]: className,
+      [className]: className
     });
-    const events = disabled ? {} : {
-      onClick: this.onClick,
-      onKeyDown: this.onKeyDown,
-      onDrop: this.onFileDrop,
-      onDragOver: this.onFileDrop,
-      tabIndex: '0',
-    };
-    return (
-      <Tag
-        {...events}
-        className={cls}
-        role="button"
-        style={style}
-      >
-        <input
-          type="file"
-          ref="file"
-          key={this.state.uid}
-          style={{ display: 'none' }}
-          accept={accept}
-          multiple={multiple}
-          onChange={this.onChange}
-        />
-        {children}
-      </Tag>
-    );
+    const events = disabled
+      ? {}
+      : {
+          onClick: this.onClick,
+          onKeyDown: this.onKeyDown,
+          onDrop: this.onFileDrop,
+          onDragOver: this.onFileDrop,
+          tabIndex: '0'
+        };
+    return this.props.image
+      ? <Tag>
+          {children}
+        </Tag>
+      : <Tag {...events} className={cls} role="button" style={style}>
+          <input
+            type="file"
+            ref="file"
+            key={this.state.uid}
+            style={{ display: 'none' }}
+            accept={accept}
+            multiple={multiple}
+            onChange={this.onChange}
+          />
+          {children}
+        </Tag>;
   }
 }
 

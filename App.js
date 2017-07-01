@@ -43,7 +43,9 @@ export default class App extends Component {
       <div>
         <h1>pagination </h1>
         <Pager pageCount={this.props.store.pageCount} onPageChange={this.props.store.onPageChange} />
-        <div>current page is: <span className="hilight"> {this.props.store.page}</span></div>
+        <div>
+          current page is: <span className="hilight"> {this.props.store.page}</span>
+        </div>
         <div>
           <h1>placeholder input support IE </h1>
           <PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} />
@@ -64,23 +66,22 @@ export default class App extends Component {
             }}>
             <div style={{ width: '400px', height: '200px' }}>
               <div>hello world</div>
-              <p><PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} /></p>
+              <p>
+                <PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} />
+              </p>
             </div>
           </Dialog>
         </div>
         <div>
           <h1>upload </h1>
-          <Upload {...uploaderProps} component="div" style={{ display: 'inline-block' }}>
-            <UploadBox />
+          <Upload {...uploaderProps} onSuccess={store.uploadSuccess} image={store.image} style={{ display: 'inline-block' }}>
+            <UploadBox onDelete={store.deleteImage} image={store.image} title="点击上传" />
           </Upload>
-
         </div>
         <div>
           <h1>upload antd </h1>
           <Avatar />
-
         </div>
-
       </div>
     );
   }
