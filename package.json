@@ -62,8 +62,11 @@
   },
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack -p",
-    "start": "cross-env NODE_ENV=development webpack-dev-server",
-    "preact": "cross-env NODE_ENV=preact webpack-dev-server"
+    "dev": "cross-env NODE_ENV=development webpack-dev-server",
+    "start": "npm-run-all -p dev server",
+    "preact-dev": "cross-env NODE_ENV=preact webpack-dev-server",
+    "server":"node server",
+    "preact":"npm-run-all -p preact-dev server"
   },
   "repository": {
     "type": "git",
