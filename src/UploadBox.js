@@ -6,7 +6,7 @@ import { observer, inject } from 'mobx-react';
 @observer
 export default class UploadBox extends Component {
   doDelete = e => {
-    e.preventDefault();
+    e.stopPropagation();
     this.props.onDelete();
   };
   render() {

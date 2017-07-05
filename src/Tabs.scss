@@ -1,0 +1,47 @@
+.in {
+  transition: color .15s linear, border-width .05s ease-out;
+}
+
+.rc-tab {
+  .tabs {
+    height: 60px;
+    border-bottom: 1px solid #e4e4e4;
+    color: #666;
+    font-size: 16px;
+    &:before, &:after {
+      display: table;
+      content: " ";
+    }
+    &:after {
+      clear: both;
+    }
+    > .tab {
+      box-sizing: border-box;
+      height: 60px;
+      line-height: 60px;
+      cursor: pointer;
+      text-align: center;
+      float: left;
+      padding: 0 18px;
+      &.active {
+        color: #38a884;
+        background: #fff;
+        border-top: 2px solid #38a884;
+        border-right: 1px solid #e4e4e4;
+        border-left: 1px solid #e4e4e4;
+      }
+    }
+  }
+  .content-list {
+    > .content {
+      width: 100%;
+      &.inactive {
+        opacity: 0;
+        height: 0;
+      }
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+}
