@@ -7,6 +7,7 @@ var formidable = require('formidable'),
 var serveStatic = require('serve-static');
 var path = require('path');
 
+app.use(serveStatic(path.resolve(__dirname, './files')));
 app.use(serveStatic(path.resolve(__dirname, './preact/')));
 app.use(cors());
 
@@ -16,15 +17,19 @@ app.get('/api', function(req, res) {
 
 app.post('/api/upload', function(req, res) {
   var form = new formidable.IncomingForm();
-
+  form.uploadDir = './files/';
+  form.keepExtensions = true;
   form.parse(req, function(err, fields, files) {
-    res.writeHead(200, { 'content-type': 'text/plain' });
-    res.write('received upload:\n\n');
-    res.end(util.inspect({ fields: fields, files: files }));
+    res.writeHead(200, { 'content-type': 'text/html' });
+    res.write(
+      JSON.stringify({ content: { url: `http://localhost:3001` + files.file.path.slice(5)} })
+    );
+    res.end();
   });
 
   return;
 });
 
 app.listen(3001);
+
 console.log('server running at ' + 3001);

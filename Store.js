@@ -37,7 +37,8 @@ export default class AppStore {
 
   @action
   uploadSuccess = (res, file) => {
-    this.image = window.URL.createObjectURL(file);
+    // this.image = window.URL.createObjectURL(file);
+    this.image = res.content.url;
   };
 
   @action
