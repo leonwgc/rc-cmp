@@ -7,58 +7,62 @@ const TIMEOUT = 150;
 
 export default class Dialog extends Component {
   state = {
-    in: false,
-    listenedOnWindow: false
+    animateIn: false,
+    isOpen: false
   };
 
-  init = () => {
-    if (!this.state.listenedOnWindow) {
-      this.setState({ listenedOnWindow: true }, () => {
-        window.addEventListener('keydown', this.handleKeydown);
+  open = () => {
+    if (!this.state.isOpen) {
+      this.setState({ isOpen: true }, () => {
+        setTimeout(() => this.setState({ animateIn: true }));
       });
     }
-    setTimeout(() => {
-      this.setState({ in: true });
-    }, TIMEOUT);
   };
 
-  handleKeydown = e => {
+  close = () => {
+    if (this.state.isOpen) {
+      this.setState({ animateIn: false }, () => {
+        setTimeout(() => this.setState({ isOpen: false }), TIMEOUT);
+        this.props.onClose();
+      });
+    }
+  };
+
+  handleESC = e => {
     if (e.keyCode === ESC_KEY) {
-      this.dispose();
+      this.close();
     }
   };
 
-  dispose = e => {
-    this.setState({ in: false, listenedOnWindow: false }, () => {
-      window.removeEventListener('keydown', this.handleKeydown);
-      setTimeout(() => {
-        this.props.close();
-      }, TIMEOUT);
-    });
-  };
   componentDidMount() {
+    window.addEventListener('keydown', this.handleESC);
     if (this.props.isOpen) {
-      this.init();
+      this.open();
     }
+  }
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleESC);
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.props.isOpen && nextProps.isOpen) {
-      this.init();
+    if (!this.state.isOpen && nextProps.isOpen) {
+      this.open();
+    } else if (this.state.isOpen && !nextProps.isOpen) {
+      this.close();
     }
   }
 
   render() {
-    return this.props.isOpen
-      ? <div className="rc-dialog">
-          <div
-            onClick={this.dispose}
-            className={classNames('rc-dialog-overlay out', { in: this.state.in })}
-          />
-          <div className={classNames('rc-dialog-body out', { in: this.state.in })}>
-            {this.props.children}
-          </div>
+    return (
+      <div className={classNames('rc-dialog', { 'x-hide': !this.state.isOpen })}>
+        <div
+          onClick={this.close}
+          className={classNames('rc-dialog-overlay out', { in: this.state.animateIn })}
+        />
+        <div className={classNames('rc-dialog-body out', { in: this.state.animateIn })}>
+          {this.props.children}
         </div>
-      : null;
+      </div>
+    );
   }
 }

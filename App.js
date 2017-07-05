@@ -61,19 +61,13 @@ export default class App extends Component {
         </div>
         <div>
           <h1>dialog </h1>
-          <button
-            onClick={() => {
-              store.setData({ isOpen: true });
-            }}>
+          <button onClick={e => (store.isOpen = true)}>
             open dialog
           </button>
-          <Dialog
-            isOpen={store.isOpen}
-            close={() => {
-              store.setData({ isOpen: false });
-            }}>
+          <Dialog isOpen={store.isOpen} onClose={e => (store.isOpen = false)}>
             <div style={{ width: '400px', height: '200px' }}>
               <div>hello world</div>
+              <button onClick={e => (store.isOpen = false)}>close dialog</button>
               <p>
                 <PlaceholderInput
                   placeholder="type here"
