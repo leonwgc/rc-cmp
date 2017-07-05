@@ -51,8 +51,13 @@ export default class Dialog extends Component {
   render() {
     return this.props.isOpen
       ? <div className="rc-dialog">
-          <div onClick={this.dispose} className={classNames('rc-dialog-overlay fade', { in: this.state.in })} />
-          <div className={classNames('rc-dialog-body fade', { in: this.state.in })}>{this.props.children}</div>
+          <div
+            onClick={this.dispose}
+            className={classNames('rc-dialog-overlay out', { in: this.state.in })}
+          />
+          <div className={classNames('rc-dialog-body out', { in: this.state.in })}>
+            {this.props.children}
+          </div>
         </div>
       : null;
   }

@@ -171,7 +171,16 @@ class AjaxUploader extends Component {
   }
 
   render() {
-    const { component: Tag, prefixCls, className, disabled, style, multiple, accept, children } = this.props;
+    const {
+      component: Tag,
+      prefixCls,
+      className,
+      disabled,
+      style,
+      multiple,
+      accept,
+      children
+    } = this.props;
     const cls = classNames({
       [prefixCls]: true,
       [`${prefixCls}-disabled`]: disabled,
@@ -187,8 +196,8 @@ class AjaxUploader extends Component {
           tabIndex: '0'
         };
     return this.props.image
-      ? <Tag>
-          {children}
+      ? <Tag style={style} className={cls}>
+          <children.type {...children.props} image={this.props.image} />
         </Tag>
       : <Tag {...events} className={cls} role="button" style={style}>
           <input

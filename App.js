@@ -7,10 +7,10 @@ import UploadBox from './src/UploadBox';
 import { observer, inject } from 'mobx-react';
 import './App.scss';
 
-import Avatar from './ref/Avatar';
+// import Avatar from './ref/Avatar';
 
 const uploaderProps = {
-  action: 'http://localhost:3001/api/upload',
+  action: '/wapi/upload',
   data: { name: 'leon', age: 18 },
   headers: {
     myHeader: 'leonwgc'
@@ -42,13 +42,21 @@ export default class App extends Component {
     return (
       <div>
         <h1>pagination </h1>
-        <Pager pageCount={this.props.store.pageCount} onPageChange={this.props.store.onPageChange} />
+        <Pager
+          pageCount={this.props.store.pageCount}
+          onPageChange={this.props.store.onPageChange}
+        />
         <div>
           current page is: <span className="hilight"> {this.props.store.page}</span>
         </div>
         <div>
-          <h1>placeholder input support IE </h1>
-          <PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} />
+          <h1>placeholder (fix ie9 input placeholder ) </h1>
+          <PlaceholderInput
+            placeholder="type here"
+            name="name"
+            value={this.props.store.name}
+            onChange={this.props.store.onChange}
+          />
           <button disabled={!this.props.store.formIsValid}>submit</button>
         </div>
         <div>
@@ -67,21 +75,27 @@ export default class App extends Component {
             <div style={{ width: '400px', height: '200px' }}>
               <div>hello world</div>
               <p>
-                <PlaceholderInput placeholder="type here" name="name" value={this.props.store.name} onChange={this.props.store.onChange} />
+                <PlaceholderInput
+                  placeholder="type here"
+                  name="name"
+                  value={this.props.store.name}
+                  onChange={this.props.store.onChange}
+                />
               </p>
             </div>
           </Dialog>
         </div>
         <div>
-          <h1>upload </h1>
-          <Upload {...uploaderProps} onSuccess={store.uploadSuccess} image={store.image} style={{ display: 'inline-block' }}>
-            <UploadBox onDelete={store.deleteImage} image={store.image} title="点击上传" />
+          <h1>upload (support both xhr & iframe mode)</h1>
+          <Upload
+            {...uploaderProps}
+            onSuccess={store.uploadSuccess}
+            image={store.image}
+            style={{ display: 'inline-block' }}>
+            <UploadBox onDelete={store.deleteImage} title="点击上传" />
           </Upload>
         </div>
-        <div>
-          <h1>upload antd </h1>
-          <Avatar />
-        </div>
+
       </div>
     );
   }

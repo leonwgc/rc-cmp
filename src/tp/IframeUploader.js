@@ -1,4 +1,3 @@
-
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
@@ -11,7 +10,7 @@ const IFRAME_STYLE = {
   opacity: 0,
   filter: 'alpha(opacity=0)',
   left: 0,
-  zIndex: 9999,
+  zIndex: 9999
 };
 
 // diferent from AjaxUpload, can only upload on at one time, serial seriously
@@ -26,17 +25,14 @@ class IframeUploader extends Component {
     onStart: PropTypes.func,
     multiple: PropTypes.bool,
     children: PropTypes.any,
-    data: PropTypes.oneOfType([
-      PropTypes.object,
-      PropTypes.func,
-    ]),
+    data: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
     action: PropTypes.string,
-    name: PropTypes.string,
-  }
+    name: PropTypes.string
+  };
 
-  state = { uploading: false }
+  state = { uploading: false };
 
-  file = {}
+  file = {};
 
   onLoad = () => {
     if (!this.state.uploading) {
@@ -54,21 +50,23 @@ class IframeUploader extends Component {
       props.onSuccess(response, file);
     } catch (err) {
       // warning(false, 'cross domain error for Upload. Maybe server should return document.domain script. see Note from https://github.com/react-component/upload');
-      console.warn('cross domain error for Upload. Maybe server should return document.domain script. see Note from https://github.com/react-component/upload');
+      console.warn(
+        'cross domain error for Upload. Maybe server should return document.domain script. see Note from https://github.com/react-component/upload'
+      );
       response = 'cross-domain';
       props.onError(err, null, file);
     }
     this.endUpload();
-  }
+  };
 
   onChange = () => {
     const target = this.getFormInputNode();
     // ie8/9 don't support FileList Object
     // http://stackoverflow.com/questions/12830058/ie8-input-type-file-get-files
-    const file = this.file = {
+    const file = (this.file = {
       uid: getUid(),
-      name: target.value,
-    };
+      name: target.value
+    });
     this.startUpload();
     const { props } = this;
     if (!props.beforeUpload) {
@@ -76,17 +74,20 @@ class IframeUploader extends Component {
     }
     const before = props.beforeUpload(file);
     if (before && before.then) {
-      before.then(() => {
-        this.post(file);
-      }, () => {
-        this.endUpload();
-      });
+      before.then(
+        () => {
+          this.post(file);
+        },
+        () => {
+          this.endUpload();
+        }
+      );
     } else if (before !== false) {
       this.post(file);
     } else {
       this.endUpload();
     }
-  }
+  };
 
   componentDidMount() {
     this.updateIframeWH();
@@ -95,6 +96,13 @@ class IframeUploader extends Component {
 
   componentDidUpdate() {
     this.updateIframeWH();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!this.props.image && prevProps.image) {
+      this.updateIframeWH();
+      this.initIframe();
+    }
   }
 
   getIframeNode() {
@@ -169,6 +177,7 @@ class IframeUploader extends Component {
 
   initIframe() {
     const iframeNode = this.getIframeNode();
+    if (!iframeNode) return;
     let win = iframeNode.contentWindow;
     let doc;
     this.domain = this.domain || '';
@@ -193,7 +202,7 @@ class IframeUploader extends Component {
       // hack avoid batch
       this.state.uploading = false;
       this.setState({
-        uploading: false,
+        uploading: false
       });
       this.initIframe();
     }
@@ -203,7 +212,7 @@ class IframeUploader extends Component {
     if (!this.state.uploading) {
       this.state.uploading = true;
       this.setState({
-        uploading: true,
+        uploading: true
       });
     }
   }
@@ -211,8 +220,10 @@ class IframeUploader extends Component {
   updateIframeWH() {
     const rootNode = ReactDOM.findDOMNode(this);
     const iframeNode = this.getIframeNode();
-    iframeNode.style.height = `${rootNode.offsetHeight}px`;
-    iframeNode.style.width = `${rootNode.offsetWidth}px`;
+    if (iframeNode) {
+      iframeNode.style.height = `${rootNode.offsetHeight}px`;
+      iframeNode.style.width = `${rootNode.offsetWidth}px`;
+    }
   }
 
   abort(file) {
@@ -250,32 +261,24 @@ class IframeUploader extends Component {
   }
 
   render() {
-    const {
-      component: Tag, disabled, className,
-      prefixCls, children, style,
-    } = this.props;
+    const { component: Tag, disabled, className, prefixCls, children, style } = this.props;
     const iframeStyle = {
       ...IFRAME_STYLE,
-      display: this.state.uploading || disabled ? 'none' : '',
+      display: this.state.uploading || disabled ? 'none' : ''
     };
     const cls = classNames({
       [prefixCls]: true,
       [`${prefixCls}-disabled`]: disabled,
-      [className]: className,
+      [className]: className
     });
-    return (
-      <Tag
-        className={cls}
-        style={{ position: 'relative', zIndex: 0, ...style }}
-      >
-        <iframe
-          ref="iframe"
-          onLoad={this.onLoad}
-          style={iframeStyle}
-        />
-        {children}
-      </Tag>
-    );
+    return this.props.image
+      ? <Tag className={cls} style={{ position: 'relative', zIndex: 0, ...style }}>
+          <children.type {...children.props} image={this.props.image} />
+        </Tag>
+      : <Tag className={cls} style={{ position: 'relative', zIndex: 0, ...style }}>
+          <iframe ref="iframe" onLoad={this.onLoad} style={iframeStyle} />
+          {children}
+        </Tag>;
   }
 }
 

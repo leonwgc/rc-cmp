@@ -15,7 +15,7 @@ app.get('/api', function(req, res) {
   res.send('Hello World');
 });
 
-app.post('/api/upload', function(req, res) {
+app.post('/wapi/upload', function(req, res) {
   var form = new formidable.IncomingForm();
   form.uploadDir = './files/';
   form.keepExtensions = true;

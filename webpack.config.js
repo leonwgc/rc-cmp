@@ -162,7 +162,12 @@ if (isDev) {
     port: port,
     hot: true,
     inline: true,
-    proxy: {}
+    proxy: {
+      '/wapi': {
+        target: 'http://localhost:3001',
+        changeOrigin: true
+      }
+    }
   };
 
   config.plugins.push(new webpack.HotModuleReplacementPlugin());

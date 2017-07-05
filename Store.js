@@ -38,6 +38,9 @@ export default class AppStore {
   @action
   uploadSuccess = (res, file) => {
     // this.image = window.URL.createObjectURL(file);
+    if (typeof res === 'string') {
+      res = JSON.parse(res);
+    }
     this.image = res.content.url;
   };
 
