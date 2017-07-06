@@ -5,6 +5,7 @@ import Upload from './src/tp/index';
 import PlaceholderInput from './src/PlaceholderInput';
 import UploadBox from './src/UploadBox';
 import { Tabs, Tab } from './src/Tabs';
+import { Steps, Step } from './src/Steps';
 import { observer, inject } from 'mobx-react';
 import './App.scss';
 
@@ -120,6 +121,28 @@ export default class App extends Component {
             <Tab title="tab without content" />
             <Tab title="tab2" />
           </Tabs>
+        </div>
+        <div>
+          <h1>Steps</h1>
+          <Steps step={store.step}>
+            <Step title="step1" />
+            <Step title="step2" />
+            <Step title="step3" />
+            <Step title="step4" />
+          </Steps>
+        </div>
+        <div>
+          <button
+            type="button"
+            onClick={e => {
+              if (store.step < 3) {
+                store.step++;
+              } else {
+                store.step = 0;
+              }
+            }}>
+            Next Step
+          </button>
         </div>
       </div>
     );

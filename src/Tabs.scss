@@ -37,7 +37,8 @@
       width: 100%;
       &.inactive {
         opacity: 0;
-        height: 0;
+        height: 0 !important;
+        overflow: hidden;
       }
       &.active {
         opacity: 1;

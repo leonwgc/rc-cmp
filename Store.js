@@ -10,6 +10,7 @@ export default class AppStore {
   @observable isOpen = false;
 
   @observable image = '';
+  @observable step = 0;
 
   @computed
   get formIsValid() {
