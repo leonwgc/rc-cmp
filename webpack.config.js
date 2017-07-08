@@ -19,23 +19,11 @@ function getPath(_path) {
   return path.resolve(__dirname, _path);
 }
 
-const babelPlugins = [
-  ['transform-decorators-legacy'],
-  ['transform-object-rest-spread'],
-  ['transform-runtime'],
-  ['transform-class-properties'],
-  ['syntax-dynamic-import'],
-  [
-    'import',
-    {
-      libraryName: 'antd',
-      style: true
-    }
-  ]
-];
+const babelPlugins = [['transform-decorators-legacy']];
 
 const entry = {
-  index: ['./polyfill', './index']
+  index: ['./polyfill', './index'],
+  vendor: ['react', 'react-dom']
 };
 
 if (isPreact) {
@@ -126,7 +114,7 @@ var config = {
         loader: 'babel-loader',
         options: {
           cacheDirectory: true,
-          presets: ['es2015', 'react'],
+          presets: ['es2015', 'react', 'stage-0'],
           plugins: babelPlugins
         }
       }
@@ -143,7 +131,6 @@ var config = {
       template: `./index.html`,
       inject: true,
       hash: true,
-      chunks: ['index'],
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
@@ -151,7 +138,19 @@ var config = {
       }
     }),
     extractLess,
-    extractSass
+    extractSass,
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor-[hash:8].js',
+      minChunks: function(module) {
+        return module.context && module.context.indexOf('node_modules') !== -1;
+      }
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      filename: 'manifest-[hash:8].js',
+      minChunks: Infinity
+    })
   ]
 };
 

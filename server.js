@@ -22,7 +22,7 @@ app.post('/wapi/upload', function(req, res) {
   form.parse(req, function(err, fields, files) {
     res.writeHead(200, { 'content-type': 'text/html' });
     res.write(
-      JSON.stringify({ content: { url: `http://localhost:3001` + files.file.path.slice(5)} })
+      JSON.stringify({ content: { url: `http://localhost:3001/` + files.file.path.slice(5)} })
     );
     res.end();
   });

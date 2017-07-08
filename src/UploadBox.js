@@ -26,9 +26,7 @@ export default class UploadBox extends Component {
                 backgroundImage: `url(${props.image})`
               }}>
               <div className="overlay">
-                <span className="delete" onClick={this.doDelete}>
-                  x
-                </span>
+                <span className="delete" onClick={this.doDelete} />
               </div>
             </div>}
       </div>
