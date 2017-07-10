@@ -8,8 +8,23 @@
     width: 120px;
   }
   .content {
-    >div {
+    > div {
       padding-top: 10px;
+    }
+  }
+}
+
+.my-steps {
+  margin-left: -32px;
+  .step {
+    width: 160px;
+    &:after {
+      content: ' ';
+      border-top: 1px solid #ccc;
+      position: absolute;
+      top: 12px;
+      left: 96px;
+      right: -64px;
     }
   }
 }

@@ -23,15 +23,13 @@ function Step({ step, index, title }) {
   var active = step >= index;
   return (
     <div className={classNames('step in', { finished: finished })}>
-      <div className="circle-box">
-        <div className={classNames('circle in', { active: active })}>
-          <span className={classNames('circle-number in', { finished: finished })}>
-            {finished ? '' : index + 1}
-          </span>
-        </div>
-        <div className={classNames({ 'active-text': active })}>
-          {title}
-        </div>
+      <div className={classNames('circle in', { active: active })}>
+        <span className={classNames('circle-number in', { finished: finished })}>
+          {finished ? '' : index + 1}
+        </span>
+      </div>
+      <div className={classNames({ 'active-text': active })}>
+        {title}
       </div>
     </div>
   );

@@ -131,6 +131,15 @@ export default class App extends Component {
             <Step title="step4" />
           </Steps>
         </div>
+
+        <div>
+          <Steps step={store.step} cls="my-steps">
+            <Step title="step1" />
+            <Step title="step2" />
+            <Step title="step3" />
+            <Step title="step4" />
+          </Steps>
+        </div>
         <div>
           <button
             type="button"
