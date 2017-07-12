@@ -6,22 +6,25 @@ const ESC_KEY = 27;
 const TIMEOUT = 150;
 
 export default class Dialog extends Component {
+  isClosed = true;
   state = {
     animateIn: false,
     isOpen: false
   };
 
   open = () => {
-    if (!this.state.isOpen) {
+    if (!this.state.isOpen && this.isClosed) {
       this.setState({ isOpen: true }, () => {
+        this.isClosed = false;
         setTimeout(() => this.setState({ animateIn: true }));
       });
     }
   };
 
   close = () => {
-    if (this.state.isOpen) {
+    if (this.state.isOpen && !this.isClosed) {
       this.setState({ animateIn: false }, () => {
+        this.isClosed = true;
         setTimeout(() => this.setState({ isOpen: false }), TIMEOUT);
         this.props.onClose();
       });
@@ -55,10 +58,7 @@ export default class Dialog extends Component {
   render() {
     return (
       <div className={classNames('rc-dialog', { 'x-hide': !this.state.isOpen })}>
-        <div
-          onClick={this.close}
-          className={classNames('rc-dialog-overlay out', { in: this.state.animateIn })}
-        />
+        <div onClick={this.close} className={classNames('rc-dialog-overlay out', { in: this.state.animateIn })} />
         <div className={classNames('rc-dialog-body out', { in: this.state.animateIn })}>
           {this.props.children}
         </div>
