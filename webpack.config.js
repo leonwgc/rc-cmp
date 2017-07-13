@@ -42,8 +42,20 @@ var config = {
   devtool: isDev ? 'source-map' : false,
   module: {
     rules: [
-      // {   enforce: "pre",   test: /\.js$/,   exclude: /node_modules/,   loader:
-      // "eslint-loader", },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        include: getPath('src'),
+        loader: 'eslint-loader',
+        options: {
+          eslintPath: require.resolve('eslint'),
+          baseConfig: {
+            extends: [require.resolve('eslint-config-react-app')]
+          },
+          ignore: false,
+          useEslintrc: false
+        }
+      },
       {
         test: /\.less$/,
         use: extractLess.extract([
