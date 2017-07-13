@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const autoprefixer = require('autoprefixer');
 
 const dist = path.resolve(__dirname, 'dist');
 const env = process.env.NODE_ENV;
@@ -67,6 +68,20 @@ var config = {
             loader: 'css-loader',
             options: {
               sourceMap: isDev
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: isDev,
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  browsers: ['>1%', 'last 4 versions', 'Firefox ESR', 'not ie < 9'],
+                  flexbox: 'no-2009'
+                })
+              ]
             }
           },
           {

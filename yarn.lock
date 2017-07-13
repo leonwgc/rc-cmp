@@ -6106,7 +6106,7 @@ postcss-filter-plugins@^2.0.0:
     postcss "^5.0.4"
     uniqid "^4.0.0"
 
-postcss-flexbugs-fixes@3.0.0:
+postcss-flexbugs-fixes@3.0.0, postcss-flexbugs-fixes@^3.0.0:
   version "3.0.0"
   resolved "http://npm.dianrong.com/postcss-flexbugs-fixes/-/postcss-flexbugs-fixes-3.0.0.tgz#7b31cb6c27d0417a35a67914c295f83c403c7ed4"
   dependencies:
@@ -6135,7 +6135,7 @@ postcss-load-plugins@^2.3.0:
     cosmiconfig "^2.1.1"
     object-assign "^4.1.0"
 
-postcss-loader@2.0.6:
+postcss-loader@2.0.6, postcss-loader@^2.0.6:
   version "2.0.6"
   resolved "http://npm.dianrong.com/postcss-loader/-/postcss-loader-2.0.6.tgz#8c7e0055a3df1889abc6bad52dd45b2f41bbc6fc"
   dependencies:
