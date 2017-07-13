@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './Dialog.scss';
 
@@ -6,6 +7,11 @@ const ESC_KEY = 27;
 const TIMEOUT = 150;
 
 export default class Dialog extends Component {
+  static propTypes = {
+    onClose: PropTypes.func,
+    isOpen: PropTypes.bool
+  };
+
   isClosed = true;
   state = {
     animateIn: false,
@@ -16,7 +22,7 @@ export default class Dialog extends Component {
     if (!this.state.isOpen && this.isClosed) {
       this.setState({ isOpen: true }, () => {
         this.isClosed = false;
-        setTimeout(() => this.setState({ animateIn: true }));
+        setTimeout(() => this.setState({ animateIn: true }),TIMEOUT);
       });
     }
   };
@@ -26,7 +32,9 @@ export default class Dialog extends Component {
       this.setState({ animateIn: false }, () => {
         this.isClosed = true;
         setTimeout(() => this.setState({ isOpen: false }), TIMEOUT);
-        this.props.onClose();
+        if (this.props.onClose) {
+          this.props.onClose();
+        }
       });
     }
   };
@@ -56,11 +64,12 @@ export default class Dialog extends Component {
   }
 
   render() {
+    const { children } = this.props;
     return (
       <div className={classNames('rc-dialog', { 'x-hide': !this.state.isOpen })}>
         <div onClick={this.close} className={classNames('rc-dialog-overlay out', { in: this.state.animateIn })} />
         <div className={classNames('rc-dialog-body out', { in: this.state.animateIn })}>
-          {this.props.children}
+          {children}
         </div>
       </div>
     );

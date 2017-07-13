@@ -44,10 +44,7 @@ export default class App extends Component {
     return (
       <div>
         <h1>pagination </h1>
-        <Pager
-          pageCount={this.props.store.pageCount}
-          onPageChange={this.props.store.onPageChange}
-        />
+        <Pager pageCount={this.props.store.pageCount} onPageChange={this.props.store.onPageChange} />
         <div>
           current page is: <span className="hilight"> {this.props.store.page}</span>
         </div>
@@ -63,10 +60,8 @@ export default class App extends Component {
         </div>
         <div>
           <h1>dialog </h1>
-          <button onClick={e => (store.isOpen = true)}>
-            open dialog
-          </button>
-          <Dialog isOpen={store.isOpen} onClose={e => (store.isOpen = false)}>
+          <button onClick={e => (store.isOpen = true)}>open dialog</button>
+          <Dialog isOpen={store.isOpen} onClose={() => (store.isOpen = false)}>
             <div style={{ width: '400px', height: '200px' }}>
               <div>hello world</div>
               <button onClick={e => (store.isOpen = false)}>close dialog</button>
@@ -94,25 +89,29 @@ export default class App extends Component {
         <div>
           <h1>Tabs</h1>
           <Tabs cls="test">
-            <Tab title="tab1"><div>content1</div></Tab>
+            <Tab title="tab1">
+              <div>content1</div>
+            </Tab>
             <Tab title="tab2" active>
               <div>
-                <button onClick={e => (store.isOpen = true)}>
-                  open dialog
-                </button>
+                <button onClick={e => (store.isOpen = true)}>open dialog</button>
               </div>
             </Tab>
-            <Tab title="tab3"><div>content3</div></Tab>
-            <Tab title="tab4"><div>content4</div></Tab>
-            <Tab title="tab5"><div>content5</div></Tab>
+            <Tab title="tab3">
+              <div>content3</div>
+            </Tab>
+            <Tab title="tab4">
+              <div>content4</div>
+            </Tab>
+            <Tab title="tab5">
+              <div>content5</div>
+            </Tab>
           </Tabs>
 
           <Tabs cls="test">
             <Tab title="one tab">
               <div>
-                <button onClick={e => (store.isOpen = true)}>
-                  open dialog
-                </button>
+                <button onClick={e => (store.isOpen = true)}>open dialog</button>
               </div>
             </Tab>
           </Tabs>
