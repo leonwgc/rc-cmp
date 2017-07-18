@@ -1,4 +1,4 @@
-/* eslint react/no-is-mounted:0 react/sort-comp:0 */
+/* eslint-disable */
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';

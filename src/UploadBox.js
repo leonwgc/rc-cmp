@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import classNames from 'classnames';
+import PropTypes from 'prop-types';
 import './UploadBox.scss';
-import { observer, inject } from 'mobx-react';
 
-@observer
 export default class UploadBox extends Component {
+  static propTypes = {
+    onDelete: PropTypes.func.isRequired,
+    title: PropTypes.string
+  };
   doDelete = e => {
     e.stopPropagation();
     this.props.onDelete();

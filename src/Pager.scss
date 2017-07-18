@@ -1,4 +1,4 @@
-.pager {
+.rc-pager {
   > ul {
     display: inline-block;
     margin: 0;
@@ -7,11 +7,7 @@
       display: inline-block;
       cursor: pointer;
       border-radius: 2px;
-      margin-right: 6px;
-      width: 26px;
-      height: 26px;
-      text-align: center;
-      line-height: 26px;
+      padding: 4px 9px;
       &.disable {
         cursor: default;
         color: #f0f0f0;
@@ -19,7 +15,8 @@
       &:hover {
         background: #f0f0f0;
       }
-      &:first-child:hover, &:last-child:hover {
+      &:first-child:hover,
+      &:last-child:hover {
         background: #fff;
       }
       &.active {

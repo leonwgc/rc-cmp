@@ -6,7 +6,18 @@ const PagerDemo = ({ store }) => {
   return (
     <div>
       <h1>pagination </h1>
-      <Pager pageCount={store.pageCount} onPageChange={store.onPageChange} />
+      <Pager
+        pageCount={store.pageCount}
+        onPageChange={store.onPageChange}
+        prevPage="<"
+        nextPage=">"
+      />
+      <Pager
+        currentPage={10}
+        pageCount={store.pageCount}
+        onPageChange={store.onPageChange}
+        showFirstLastPage={true}
+      />
       <div>
         current page is: <span className="hilight"> {store.page}</span>
       </div>

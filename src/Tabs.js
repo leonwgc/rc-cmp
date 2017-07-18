@@ -30,14 +30,12 @@ class Tabs extends Component {
       content: this.contents[activeTabIndex]
     };
   }
-  tabClickFactory = index => {
-    return e => {
-      this.setState({ activeTabIndex: index, content: this.contents[index] });
-    };
+  tabClickFactory = index => () => {
+    this.setState({ activeTabIndex: index, content: this.contents[index] });
   };
 
   render() {
-    const { children, style, cls } = this.props;
+    const { children, cls } = this.props;
     return (
       <div className={'rc-tab ' + (cls ? cls : '')}>
         <div className="tabs">
@@ -67,7 +65,11 @@ class Tabs extends Component {
 }
 
 function Tab({ active, title, onClick }) {
-  return <div onClick={onClick} className={classNames('tab in', { active: active })}>{title}</div>;
+  return (
+    <div onClick={onClick} className={classNames('tab in', { active: active })}>
+      {title}
+    </div>
+  );
 }
 
 export default { Tabs, Tab };
