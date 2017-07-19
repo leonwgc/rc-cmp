@@ -172,7 +172,7 @@ if (isDev) {
     disableHostCheck: true,
     contentBase: dist,
     port: port,
-    hot: true,
+    hot: false,
     inline: true,
     proxy: {
       '/wapi': {

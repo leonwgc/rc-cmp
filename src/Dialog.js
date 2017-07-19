@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import './Dialog.scss';
+import utility from './utility';
 
 const ESC_KEY = 27;
-const TIMEOUT = 150;
 
 export default class Dialog extends Component {
   static propTypes = {
@@ -12,30 +12,27 @@ export default class Dialog extends Component {
     isOpen: PropTypes.bool
   };
 
-  isClosed = true;
-  state = {
-    animateIn: false,
-    isOpen: false
-  };
-
   open = () => {
-    if (!this.state.isOpen && this.isClosed) {
-      this.setState({ isOpen: true }, () => {
-        this.isClosed = false;
-        setTimeout(() => this.setState({ animateIn: true }),TIMEOUT);
-      });
+    if (!this.isOpen) {
+      this.isOpen = true;
+      utility.removeClass(this.dialog, 'x-hide');
+      utility.reflow(this.dialog);
+      utility.addClass(this.content, 'in');
+      utility.addClass(this.overlay, 'in');
     }
   };
 
   close = () => {
-    if (this.state.isOpen && !this.isClosed) {
-      this.setState({ animateIn: false }, () => {
-        this.isClosed = true;
-        setTimeout(() => this.setState({ isOpen: false }), TIMEOUT);
-        if (this.props.onClose) {
-          this.props.onClose();
-        }
-      });
+    if (this.isOpen) {
+      this.isOpen = false;
+      if (this.props.onClose) {
+        this.props.onClose();
+      }
+      utility.removeClass(this.overlay, 'in');
+      utility.removeClass(this.content, 'in');
+      setTimeout(() => {
+        utility.addClass(this.dialog, 'x-hide');
+      }, 300);
     }
   };
 
@@ -56,19 +53,25 @@ export default class Dialog extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.isOpen && nextProps.isOpen) {
-      this.open();
-    } else if (this.state.isOpen && !nextProps.isOpen) {
-      this.close();
+    if (this.props.isOpen !== nextProps.isOpen) {
+      nextProps.isOpen ? this.open() : this.close();
     }
   }
 
   render() {
     const { children } = this.props;
     return (
-      <div className={classNames('rc-dialog', { 'x-hide': !this.state.isOpen })}>
-        <div onClick={this.close} className={classNames('rc-dialog-overlay out', { in: this.state.animateIn })} />
-        <div className={classNames('rc-dialog-body out', { in: this.state.animateIn })}>
+      <div
+        ref={dialog => (this.dialog = dialog)}
+        className={classNames('rc-dialog x-hide')}>
+        <div
+          ref={overlay => (this.overlay = overlay)}
+          onClick={this.close}
+          className={classNames('rc-dialog-overlay out')}
+        />
+        <div
+          ref={content => (this.content = content)}
+          className={classNames('rc-dialog-body out')}>
           {children}
         </div>
       </div>
