@@ -1,6 +1,10 @@
 .rc-steps {
   min-height: 50px;
-  &:before, &:after {
+  .in {
+    transition: all 0.15s linear;
+  }
+  &:before,
+  &:after {
     display: table;
     content: " ";
   }

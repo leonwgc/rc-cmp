@@ -27,7 +27,7 @@
         border-left: 1px solid #e4e4e4;
       }
       &.in {
-        transition: color .15s linear, border-top .05s ease-out;
+        transition: color .15s ease-in;
       }
     }
   }
