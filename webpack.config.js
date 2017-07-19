@@ -43,20 +43,6 @@ var config = {
   module: {
     rules: [
       {
-        enforce: 'pre',
-        test: /\.js$/,
-        include: getPath('src'),
-        loader: 'eslint-loader',
-        options: {
-          eslintPath: require.resolve('eslint'),
-          baseConfig: {
-            extends: [require.resolve('eslint-config-react-app')]
-          },
-          ignore: false,
-          useEslintrc: false
-        }
-      },
-      {
         test: /\.less$/,
         use: extractLess.extract([
           {
