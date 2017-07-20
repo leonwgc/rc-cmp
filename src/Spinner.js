@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 const STEP = 0.1;
 const ROTATION_STEP = 3 * Math.PI / 180;
@@ -6,8 +7,9 @@ const FULL_PI = 2 * Math.PI;
 const HALF_PI = 0.5 * Math.PI;
 const RADIUS_PERCENT = 0.8;
 const DEFAULT_Loading_COLOR = '#00bc8d';
-const DEFAULT_Loading_WIDTH = 2;
+const DEFAULT_Loading_SIZE = 2;
 const DEFAULT_DIMENSIONS = 40;
+const LOADING_Text = '加载中...';
 
 // upate values
 let startAngle = 0;
@@ -17,21 +19,27 @@ let moveStart = false;
 let radius = 15;
 
 // valid props -- checked later and defaulted here
-let width = DEFAULT_DIMENSIONS;
-let height = DEFAULT_DIMENSIONS;
-let loadingColor = DEFAULT_Loading_COLOR;
-let loadingWidth = DEFAULT_Loading_WIDTH;
+let size = DEFAULT_DIMENSIONS;
+let color = DEFAULT_Loading_COLOR;
+let lineWidth = DEFAULT_Loading_SIZE;
+let loadingText = LOADING_Text;
 
 class Loading extends Component {
   static hasRAF = typeof window.requestAnimationFrame === 'function';
+  static propTypes = {
+    size: PropTypes.number,
+    color: PropTypes.string,
+    lineWidth: PropTypes.number,
+    loadingText: PropTypes.string
+  };
   timer = 0;
   raf = 0;
   componentWillMount() {
-    width = this.props.width || DEFAULT_DIMENSIONS;
-    height = this.props.height || DEFAULT_DIMENSIONS;
-    radius = Math.min(width / 2, height / 2) * RADIUS_PERCENT;
-    loadingColor = this.props.loadingColor || DEFAULT_Loading_COLOR;
-    loadingWidth = this.props.loadingWidth || DEFAULT_Loading_WIDTH;
+    size = this.props.size || DEFAULT_DIMENSIONS;
+    radius = Math.min(size / 2, size / 2) * RADIUS_PERCENT;
+    color = this.props.color || DEFAULT_Loading_COLOR;
+    lineWidth = this.props.lineWidth || DEFAULT_Loading_SIZE;
+    loadingText = this.props.loadingText || LOADING_Text;
   }
 
   componentDidMount() {
@@ -53,8 +61,8 @@ class Loading extends Component {
 
   render() {
     return (
-      <canvas ref={c => (this.c = c)} width={width} height={height}>
-        加载中...
+      <canvas ref={c => (this.c = c)} width={size} height={size}>
+        {loadingText}
       </canvas>
     );
   }
@@ -64,13 +72,19 @@ class Loading extends Component {
     if (!c) return;
 
     var ctx = c.getContext('2d');
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, size, size);
 
     ctx.beginPath();
 
-    ctx.arc(width / 2, height / 2, radius, rotation + startAngle, rotation + endAngle);
-    ctx.strokeStyle = loadingColor;
-    ctx.lineWidth = loadingWidth;
+    ctx.arc(
+      size / 2,
+      size / 2,
+      radius,
+      rotation + startAngle,
+      rotation + endAngle
+    );
+    ctx.strokeStyle = color;
+    ctx.lineWidth = lineWidth;
     ctx.stroke();
 
     rotation += ROTATION_STEP;
