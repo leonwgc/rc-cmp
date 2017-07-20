@@ -19,12 +19,14 @@ export default class Dialog extends Component {
       utility.reflow(this.dialog);
       utility.addClass(this.content, 'in');
       utility.addClass(this.overlay, 'in');
+      document.body.style.overflow = 'hidden';
     }
   };
 
   close = () => {
     if (this.isOpen) {
       this.isOpen = false;
+      document.body.style.overflow = '';
       if (this.props.onClose) {
         this.props.onClose();
       }
