@@ -8,7 +8,7 @@ const ESC_KEY = 27;
 
 export default class Dialog extends Component {
   static propTypes = {
-    onClose: PropTypes.func,
+    onClose: PropTypes.func.isRequired,
     isOpen: PropTypes.bool
   };
 
