@@ -21,7 +21,7 @@ const uploaderProps = {
     console.log('onSuccess', file);
   },
   onProgress(step, file) {
-    console.log('onProgress', Math.round(step.percent), file.name);
+    // console.log('onProgress', Math.round(step.percent), file.name);
   },
   onError(err) {
     console.log('onError', err);
@@ -35,9 +35,16 @@ const UploadDemo = ({ store }) => {
       <Upload
         {...uploaderProps}
         onSuccess={store.uploadSuccess}
-        image={store.image}
-        style={{ display: 'inline-block' }}>
-        <UploadBox onDelete={store.deleteImage} title="点击上传" />
+        onProgress={step => {
+          store.percent = step.percent;
+        }}
+        disabled={!!store.image}>
+        <UploadBox
+          onDelete={store.deleteImage}
+          percent={store.percent}
+          image={store.image}
+          title="点击上传"
+        />
       </Upload>
     </div>
   );

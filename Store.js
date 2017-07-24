@@ -10,6 +10,7 @@ export default class AppStore {
   @observable isOpen = false;
 
   @observable image = '';
+  @observable percent = 0;
   @observable step = 0;
 
   @computed
@@ -48,5 +49,6 @@ export default class AppStore {
   @action
   deleteImage = () => {
     this.image = '';
+    this.percent = 0;
   };
 }

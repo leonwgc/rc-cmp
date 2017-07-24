@@ -91,8 +91,13 @@ class AjaxUploader extends Component {
     if (before && before.then) {
       before
         .then(processedFile => {
-          const processedFileType = Object.prototype.toString.call(processedFile);
-          if (processedFileType === '[object File]' || processedFileType === '[object Blob]') {
+          const processedFileType = Object.prototype.toString.call(
+            processedFile
+          );
+          if (
+            processedFileType === '[object File]' ||
+            processedFileType === '[object Blob]'
+          ) {
             this.post(processedFile);
           } else {
             this.post(file);
@@ -195,22 +200,21 @@ class AjaxUploader extends Component {
           onDragOver: this.onFileDrop,
           tabIndex: '0'
         };
-    return this.props.image
-      ? <Tag style={style} className={cls}>
-          <children.type {...children.props} image={this.props.image} />
-        </Tag>
-      : <Tag {...events} className={cls} role="button" style={style}>
-          <input
-            type="file"
-            ref="file"
-            key={this.state.uid}
-            style={{ display: 'none' }}
-            accept={accept}
-            multiple={multiple}
-            onChange={this.onChange}
-          />
-          {children}
-        </Tag>;
+        
+    return (
+      <Tag {...events} className={cls} role="button" style={style}>
+        <input
+          type="file"
+          ref="file"
+          key={this.state.uid}
+          style={{ display: 'none' }}
+          accept={accept}
+          multiple={multiple}
+          onChange={this.onChange}
+        />
+        {children}
+      </Tag>
+    );
   }
 }
 

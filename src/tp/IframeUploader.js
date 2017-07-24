@@ -262,7 +262,14 @@ class IframeUploader extends Component {
   }
 
   render() {
-    const { component: Tag, disabled, className, prefixCls, children, style } = this.props;
+    const {
+      component: Tag,
+      disabled,
+      className,
+      prefixCls,
+      children,
+      style
+    } = this.props;
     const iframeStyle = {
       ...IFRAME_STYLE,
       display: this.state.uploading || disabled ? 'none' : ''
@@ -272,14 +279,14 @@ class IframeUploader extends Component {
       [`${prefixCls}-disabled`]: disabled,
       [className]: className
     });
-    return this.props.image
-      ? <Tag className={cls} style={{ position: 'relative', zIndex: 0, ...style }}>
-          <children.type {...children.props} image={this.props.image} />
-        </Tag>
-      : <Tag className={cls} style={{ position: 'relative', zIndex: 0, ...style }}>
-          <iframe ref="iframe" onLoad={this.onLoad} style={iframeStyle} />
-          {children}
-        </Tag>;
+    return (
+      <Tag
+        className={cls}
+        style={{ position: 'relative', zIndex: 0, ...style }}>
+        <iframe ref="iframe" onLoad={this.onLoad} style={iframeStyle} />
+        {children}
+      </Tag>
+    );
   }
 }
 

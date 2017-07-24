@@ -11,26 +11,39 @@ export default class UploadBox extends Component {
     e.stopPropagation();
     this.props.onDelete();
   };
+  getJsx = () => {
+    if (!this.props.image) {
+      return this.props.percent && this.props.percent < 100
+        ? <div className="uploading">
+            <div>正在上传...</div>
+            <div className="title">
+              {this.props.percent}%
+            </div>
+          </div>
+        : <div>
+            <div className="trigger" />
+            <div className="title">
+              {this.props.title}
+            </div>
+          </div>;
+    } else {
+      return (
+        <div
+          className="image-holder"
+          style={{
+            backgroundImage: `url(${this.props.image})`
+          }}>
+          <div className="overlay">
+            <span className="delete" onClick={this.doDelete} />
+          </div>
+        </div>
+      );
+    }
+  };
   render() {
-    var props = this.props;
     return (
       <div className="upload-box">
-        {!props.image
-          ? <div>
-              <div className="trigger" />
-              <div className="title">
-                {props.title}
-              </div>
-            </div>
-          : <div
-              className="image-holder"
-              style={{
-                backgroundImage: `url(${props.image})`
-              }}>
-              <div className="overlay">
-                <span className="delete" onClick={this.doDelete} />
-              </div>
-            </div>}
+        {this.getJsx()}
       </div>
     );
   }
