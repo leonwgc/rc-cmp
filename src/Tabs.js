@@ -25,13 +25,14 @@ class Tabs extends Component {
       this.contents.push(item.props.children || item.children);
     });
 
+    var a = 12345345345;
+
     this.state = {
-      activeTabIndex,
-      content: this.contents[activeTabIndex]
+      activeTabIndex
     };
   }
   tabClickFactory = index => () => {
-    this.setState({ activeTabIndex: index, content: this.contents[index] });
+    this.setState({ activeTabIndex: index });
   };
 
   render() {
@@ -54,7 +55,8 @@ class Tabs extends Component {
               className={classNames('content', {
                 active: index === this.state.activeTabIndex,
                 inactive: index !== this.state.activeTabIndex
-              })}>
+              })}
+            >
               {item}
             </div>
           )}
