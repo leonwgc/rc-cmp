@@ -120,12 +120,12 @@ var config = {
     alias: {}
   },
   plugins: [
-    new CleanPlugin([dist]),
+    // new CleanPlugin([dist]),
     new HtmlWebpackPlugin({
-      filename: `index.html`,
+      filename: `index0.html`,
       template: `./ssr/index.html`,
       inject: true,
-      hash: true,
+      hash: false,
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
@@ -134,19 +134,7 @@ var config = {
     }),
     new ExtractTextPlugin(
       isDev ? '[name].[hash].css' : '[name].[contenthash].css'
-    ),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      filename: 'vendor-[hash:8].js',
-      minChunks: function(module) {
-        return module.context && module.context.indexOf('node_modules') !== -1;
-      }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      filename: 'manifest-[hash:8].js',
-      minChunks: Infinity
-    })
+    )
   ]
 };
 

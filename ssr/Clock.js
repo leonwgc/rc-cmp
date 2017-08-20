@@ -16,7 +16,7 @@ export default class Clock extends Component {
   }
 
   render() {
-    let time = new Date(this.state.time).toLocaleTimeString();
+    let time = new Date(this.state.time).toString();
     return (
       <span>
         {time}

@@ -9,7 +9,7 @@ const isProd = env === 'production';
 const babelPlugins = [['transform-decorators-legacy']];
 
 const entry = {
-  ssr: ['./ssr']
+  server: ['./ssr/server']
 };
 
 var config = {
@@ -43,7 +43,7 @@ var config = {
     extensions: ['.js', '.json', 'jsx'],
     alias: {}
   },
-  plugins: [new CleanPlugin([dist])]
+  plugins: []
 };
 
 if (isProd) {
