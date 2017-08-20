@@ -68,6 +68,9 @@
     "preact-dev": "cross-env NODE_ENV=preact webpack-dev-server",
     "server": "node server",
     "preact": "npm-run-all -p preact-dev server",
+    "ssr-client": "webpack --config webpack.ssr.client.config.js --progress",
+    "ssr-server": "webpack --config webpack.ssr.server.config.js --progress",
+    "ssr": "npm-run-all -p ssr-server ssr-client",
     "lint": "eslint src"
   },
   "repository": {
