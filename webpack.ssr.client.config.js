@@ -120,18 +120,6 @@ var config = {
     alias: {}
   },
   plugins: [
-    // new CleanPlugin([dist]),
-    new HtmlWebpackPlugin({
-      filename: `index0.html`,
-      template: `./ssr/index.html`,
-      inject: true,
-      hash: false,
-      minify: {
-        removeComments: isProd,
-        collapseWhitespace: isProd,
-        minifyJS: isProd
-      }
-    }),
     new ExtractTextPlugin(
       isDev ? '[name].[hash].css' : '[name].[contenthash].css'
     )
