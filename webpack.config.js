@@ -44,7 +44,7 @@ const babelPlugins = [['transform-decorators-legacy']];
 
 const entry = {
   index: ['./polyfill', './index'],
-  vendor: ['react', 'react-dom']
+  vendor: ['react', 'react-dom', 'mobx-react', 'mobx', 'classnames', 'promise']
 };
 
 if (isPreact) {
@@ -57,7 +57,7 @@ var config = {
   entry: entry,
   output: {
     path: dist,
-    filename: '[name].js'
+    filename: isDev ? '[name].js' : '[name][chunkhash].js'
   },
   devtool: isDev ? 'source-map' : false,
   module: {
@@ -137,27 +137,25 @@ var config = {
       filename: `index.html`,
       template: `./index.html`,
       inject: true,
-      hash: true,
+      hash: false,
       minify: {
         removeComments: isProd,
         collapseWhitespace: isProd,
         minifyJS: isProd
       }
     }),
-    new ExtractTextPlugin(
-      isDev ? '[name].[hash].css' : '[name].[contenthash].css'
-    ),
+    new ExtractTextPlugin(isDev ? '[name].css' : '[name].[contenthash].css'),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      filename: 'vendor-[hash:8].js',
+      filename: isDev ? '[name].js' : '[name][chunkhash].js',
       minChunks: function(module) {
+        // This prevents stylesheet resources with the .css or .scss extension
+        // from being moved from their original chunk to the vendor chunk
+        if (module.resource && /^.*\.(css|scss|less)$/.test(module.resource)) {
+          return false;
+        }
         return module.context && module.context.indexOf('node_modules') !== -1;
       }
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      filename: 'manifest-[hash:8].js',
-      minChunks: Infinity
     })
   ]
 };
